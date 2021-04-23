@@ -28,11 +28,11 @@
     
     self.title = @"MoiveWriter使用";
     self.view.backgroundColor = [UIColor blackColor];
-    //创建输入源
+    //创建输出源头
     self.videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionFront];
     self.videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     self.videoCamera.horizontallyMirrorFrontFacingCamera = YES;
-    //输出源
+    //接受者
     self.filterView = [[GPUImageView alloc] initWithFrame:self.view.frame];
     self.filterView.backgroundColor = [UIColor blackColor];
     self.filterView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
@@ -41,7 +41,7 @@
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
     unlink([pathToMovie UTF8String]);
     self.movieURL = [NSURL fileURLWithPath:pathToMovie];
-    //另一个输出源
+    //另一个接受者
     _movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:self.movieURL size:CGSizeMake(480, 640)];
     self.videoCamera.audioEncodingTarget = _movieWriter;
     [self.videoCamera addAudioInputsAndOutputs];
@@ -53,7 +53,7 @@
     //设置滤镜
     self.beautifyFilter = [[LFGPUImageBeautyFilter alloc] init];
     [self.videoCamera addTarget:self.beautifyFilter];
-    //处理后的滤镜添加到输出源
+    //处理后的滤镜添加到接受者
     [self.beautifyFilter addTarget:self.filterView];
     [self.beautifyFilter addTarget:_movieWriter];
    

@@ -44,21 +44,21 @@
     
     // 播放
     NSURL *sampleURL = [[NSBundle mainBundle] URLForResource:@"IMG_4278" withExtension:@"MOV"];
-    //视频输入源
+    //视频输出源头
     movieFile = [[GPUImageMovie alloc] initWithURL:sampleURL];
     movieFile.runBenchmark = YES;
     movieFile.playAtActualSpeed = YES;
-    //摄像头输入源
+    //摄像头输出源头
     videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPreset640x480 cameraPosition:AVCaptureDevicePositionBack];
     videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
     
     NSString *pathToMovie = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/Movie.m4v"];
     unlink([pathToMovie UTF8String]);
     NSURL *movieURL = [NSURL fileURLWithPath:pathToMovie];
-    //初始化输出源
+    //初始化接受者
     movieWriter = [[GPUImageMovieWriter alloc] initWithMovieURL:movieURL size:CGSizeMake(480.0, 640.0)];
 
-    
+    //初始化 显示接受者
     GPUImageFilter* progressFilter = [[GPUImageFilter alloc] init];
     [movieFile addTarget:progressFilter];
     //设置输出方向
@@ -80,7 +80,7 @@
     }
     // 显示到界面
     [filter addTarget:filterView];
-    //添加到输出源
+    //添加接受者
     [filter addTarget:movieWriter];
     
     [videoCamera startCameraCapture];
